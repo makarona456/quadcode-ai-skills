@@ -21,8 +21,9 @@
 | Документация для пользователя (EN) | `README.md` + `docs/USER-GUIDE.md` (оба английские) |
 
 ## Ссылки
-- **Демо-лендинг:** https://claude.ai/code/artifact/835692eb-3b92-4df2-ba35-6afec0506bce
-- **Google Drive (исходники):** _подставить перед отправкой_
+- **Демо-лендинг (GitHub Pages):** https://makarona456.github.io/quadcode-ai-skills/
+- **Репозиторий (код + промпты + доки):** https://github.com/makarona456/quadcode-ai-skills
+- **Google Drive (та же папка):** _подставить перед отправкой_
 
 ## Как это делалось
 Каждый скилл прошёл конвейер: **research спроса → инженерия промпта → adversarial red-team → hardening**.

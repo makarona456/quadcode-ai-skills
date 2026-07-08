@@ -1,14 +1,16 @@
-# Demo landing page
+# Demo landing page — links
 
-**Live, self-contained demo (open in a browser):**
-https://claude.ai/code/artifact/835692eb-3b92-4df2-ba35-6afec0506bce
+**Live, self-contained demo (open in any browser):**
+- GitHub Pages: https://makarona456.github.io/quadcode-ai-skills/
+- Mirror (claude.ai artifact): https://claude.ai/code/artifact/835692eb-3b92-4df2-ba35-6afec0506bce
 
-This one page is self-sufficient: it shows what each skill does, how it works, the
-before/after, guardrails, a live infographic (the Data Storyteller output), and the demand
-evidence — no extra reading required.
+This one page is self-sufficient: it shows what each skill does, how it works, the before/after,
+guardrails, a live infographic (the Data Storyteller output), and the demand evidence — no extra
+reading required.
 
-Source of the page: `index.html` in this folder (single file, no dependencies — can also be
-opened locally by double-clicking, or hosted anywhere).
+**Source files:**
+- `index.html` (repo root) — full standalone page; open by double-click or serve anywhere.
+- `demo/index.html` — the fragment published to the claude.ai artifact.
 
-> The `index.html` here is the exact source of the published page. If you change it, re-publish
-> to update the same link.
+> The GitHub Pages page is served from the repo-root `index.html` on the `main` branch. Push a change
+> to that file and the site updates automatically in ~1 minute.
