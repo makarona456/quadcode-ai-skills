@@ -8,6 +8,10 @@ This one page is self-sufficient: it shows what each skill does, how it works, t
 guardrails, a live infographic (the Data Storyteller output), and the demand evidence — no extra
 reading required.
 
+**Overview presentation (PDF, 8 slides):**
+- `demo/Quadcode-AI-Skills-Overview.pdf` — a self-contained deck covering both skills (problem,
+  how it works, before/after, the live infographic, guardrails, links). Source: `demo/overview-deck.html`.
+
 **Source files:**
 - `index.html` (repo root) — full standalone page; open by double-click or serve anywhere.
 - `demo/index.html` — the fragment published to the claude.ai artifact.

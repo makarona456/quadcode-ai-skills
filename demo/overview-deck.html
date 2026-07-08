@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Quadcode AI Skills — Overview</title>
+<style>
+  :root{
+    --ground:#0B0F16; --surface:#121824; --surface-2:#0E141E; --raise:#161E2C;
+    --line:#232C3B; --line-soft:#1a2130;
+    --ink:#E7ECF3; --ink-dim:#B7C1D0; --muted:#8592A6;
+    --accent:#3FE0C0; --accent-deep:#1FB89B; --accent-ghost:rgba(63,224,192,.12);
+    --before:#E8A13B; --before-ghost:rgba(232,161,59,.12); --danger:#E5646B;
+    --mono:"Cascadia Code","Consolas",ui-monospace,monospace;
+    --sans:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html,body{background:#05070b}
+  body{font-family:var(--sans); -webkit-print-color-adjust:exact; print-color-adjust:exact}
+  @page{ size:13.333in 7.5in; margin:0; }
+
+  .slide{
+    position:relative; width:13.333in; height:7.5in; overflow:hidden;
+    background:var(--ground); color:var(--ink);
+    padding:0.62in 0.72in; display:flex; flex-direction:column;
+    page-break-after:always; -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .slide:last-child{page-break-after:auto}
+  .slide::after{content:""; position:absolute; left:0; right:0; bottom:0; height:5px; background:var(--accent); opacity:.9}
+
+  .kicker{font-family:var(--mono); font-size:12.5px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted)}
+  .kicker b{color:var(--accent); font-weight:600}
+  h1{font-size:60px; font-weight:800; letter-spacing:-.02em; line-height:1.02; text-wrap:balance}
+  h2{font-size:35px; font-weight:780; letter-spacing:-.02em; line-height:1.05}
+  h2 .accent{color:var(--accent)}
+  .u{ text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:7px; text-decoration-thickness:3px }
+  .lede{font-size:20px; color:var(--ink-dim); line-height:1.5; max-width:26ch}
+  .foot{margin-top:auto; display:flex; justify-content:space-between; align-items:flex-end; font-family:var(--mono); font-size:12px; color:var(--muted)}
+  .foot .pg{color:var(--ink-dim)}
+  .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--accent-ghost);display:inline-block;vertical-align:middle}
+
+  .slide-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:26px}
+  .tag{font-family:var(--mono); font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted)}
+  .tag .chip{color:var(--accent); border:1px solid var(--line); border-radius:999px; padding:4px 12px; margin-right:10px}
+
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:22px; flex:1}
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:22px 24px; display:flex; flex-direction:column}
+  .card h3{font-size:22px; font-weight:740; letter-spacing:-.01em; margin-bottom:4px}
+  .card .sub{font-family:var(--mono); font-size:13px; color:var(--accent); margin-bottom:12px}
+  .card p{font-size:15.5px; color:var(--ink-dim); line-height:1.5}
+
+  .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:6px 0 20px}
+  .stat{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px 18px}
+  .stat .big{font-family:var(--mono); font-size:30px; font-weight:600; letter-spacing:-.02em; color:var(--ink)}
+  .stat .big .unit{color:var(--accent); font-size:.6em}
+  .stat .cap{font-size:13px; color:var(--muted); margin-top:6px; line-height:1.4}
+
+  .flow{display:flex; gap:10px; align-items:stretch; margin-top:6px}
+  .node{flex:1; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:13px 14px}
+  .node b{display:block; font-family:var(--mono); font-size:12px; color:var(--accent); letter-spacing:.06em; margin-bottom:5px}
+  .node span{font-size:13.5px; color:var(--ink-dim); line-height:1.4}
+  .arrow{align-self:center; color:var(--muted); font-family:var(--mono); font-size:20px}
+
+  .ba{display:grid; grid-template-columns:1fr 1fr; gap:20px; flex:1}
+  .panel{border:1px solid var(--line); border-radius:14px; background:var(--surface); overflow:hidden; display:flex; flex-direction:column}
+  .panel .ph{padding:12px 18px; border-bottom:1px solid var(--line); font-family:var(--mono); font-size:13px; text-transform:uppercase; letter-spacing:.08em; display:flex; align-items:center; gap:10px}
+  .panel .ph .badge{font-size:11px; padding:3px 10px; border-radius:999px; font-weight:700}
+  .before .ph{color:var(--before)} .before .ph .badge{background:var(--before-ghost);color:var(--before)} .before{border-color:#5a4423}
+  .after .ph{color:var(--accent)} .after .ph .badge{background:var(--accent-ghost);color:var(--accent)} .after{border-color:#1f5348}
+  .pb{padding:16px 18px}
+  .code{font-family:var(--mono); font-size:13px; line-height:1.55; background:var(--surface-2); border:1px solid var(--line-soft); border-radius:10px; padding:12px 14px; white-space:pre; color:var(--ink-dim); overflow:hidden}
+  .code .k{color:var(--accent)} .code .b{color:var(--before)} .code .c{color:var(--muted)}
+  ul{list-style:none; display:flex; flex-direction:column; gap:9px; margin-top:12px}
+  ul li{font-size:14.5px; color:var(--ink-dim); padding-left:20px; position:relative; line-height:1.4}
+  ul li::before{content:"›"; position:absolute; left:2px; color:var(--muted); font-family:var(--mono)}
+  .flag{color:var(--before); font-weight:600} .good{color:var(--accent); font-weight:600}
+  li.f::before{content:"×"; color:var(--before)} li.g::before{content:"✓"; color:var(--accent)}
+  .verdict{margin-top:16px; padding:13px 16px; border-radius:12px; background:var(--accent-ghost); border:1px solid #1f5348; font-size:15px; color:var(--ink)}
+  .verdict b{color:var(--accent)}
+
+  .chips{display:flex; flex-wrap:wrap; gap:11px; margin-top:8px}
+  .g-chip{font-family:var(--mono); font-size:13.5px; padding:9px 15px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--ink-dim)}
+  .g-chip .i{color:var(--accent); margin-right:7px} .g-chip.warn .i{color:var(--danger)}
+
+  .infographic{height:100%; width:auto; display:block; border-radius:10px}
+  .render-frame{background:var(--surface-2); border:1px solid var(--line); border-radius:14px; padding:12px; display:flex; align-items:center; justify-content:center}
+  .audit{font-family:var(--mono); font-size:13px; margin-top:12px}
+  .audit .row{display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--line-soft)}
+  .audit .row span:first-child{color:var(--ink)} .audit .row span:last-child{color:var(--muted)}
+  .audit .pass{color:var(--accent); font-weight:700; margin-top:8px}
+
+  .links{display:flex; flex-direction:column; gap:16px; font-family:var(--mono); font-size:19px; margin-top:8px}
+  .links .l{display:flex; gap:16px; align-items:baseline}
+  .links .lbl{color:var(--muted); width:110px; font-size:14px; text-transform:uppercase; letter-spacing:.1em}
+  .links a, .links .v{color:var(--accent); text-decoration:none; word-break:break-all}
+  .big-contact{font-size:15px; color:var(--ink-dim)}
+</style>
+</head>
+<body>
+
+<!-- 1 · TITLE -->
+<section class="slide">
+  <div class="slide-head">
+    <div class="tag"><span class="dot"></span>&nbsp;&nbsp;Quadcode&nbsp;AI · Skills</div>
+    <div class="tag">Skills Engineer · test task</div>
+  </div>
+  <div style="margin:auto 0">
+    <p class="kicker"><b>◇</b> Two reusable skills for the Quadcode AI platform</p>
+    <h1 style="margin:22px 0 0">Two skills for Quadcode&nbsp;AI.<br>Both <span class="u">show their work.</span></h1>
+    <p class="lede" style="margin-top:26px; max-width:44ch">One rewrites a weak prompt and hands you the evidence it's better. The other turns a messy spreadsheet into a board-ready visual — and audits every number first.</p>
+  </div>
+  <div class="foot"><span>Prompt Optimizer&nbsp;&nbsp;+&nbsp;&nbsp;Data Storyteller</span><span class="pg">Makar Mushakov · overview</span></div>
+</section>
+
+<!-- 2 · OVERVIEW -->
+<section class="slide">
+  <div class="slide-head"><div class="tag"><span class="chip">Overview</span> what's in the box</div><div class="tag">01</div></div>
+  <div class="cols">
+    <div class="card">
+      <h3>1 · Prompt Optimizer</h3>
+      <div class="sub">text · any model · zero setup</div>
+      <p>Turns a rough LLM prompt into a production-grade one <b>and proves the gain</b>: diagnosis → rewrite → per-model variants → auto-generated tests → a BEFORE/AFTER contrast. A meta-skill that demonstrates the exact competency the role hires for.</p>
+    </div>
+    <div class="card">
+      <h3>2 · Data Storyteller</h3>
+      <div class="sub">visual · Lumi + Sonic + code sandbox</div>
+      <p>Turns raw data (CSV/JSON/table) into a polished, on-brand <b>infographic</b> (+ optional narrated video). Its obsession is truth: every figure is traced to a source cell or computed in a sandbox before a pixel is drawn.</p>
+    </div>
+  </div>
+  <div style="margin-top:22px">
+    <p class="kicker" style="margin-bottom:12px">How each was engineered — not vibe-prompted</p>
+    <div class="flow">
+      <div class="node"><b>01 Research</b><span>cited evidence the problem is real</span></div>
+      <span class="arrow">→</span>
+      <div class="node"><b>02 Engineer</b><span>full system prompt + strict output</span></div>
+      <span class="arrow">→</span>
+      <div class="node"><b>03 Red-team</b><span>adversarial inputs try to break it</span></div>
+      <span class="arrow">→</span>
+      <div class="node"><b>04 Harden</b><span>every finding folded back + changelog</span></div>
+    </div>
+  </div>
+  <div class="foot"><span><span class="dot"></span></span><span class="pg">2 / 8</span></div>
+</section>
+
+<!-- 3 · SKILL 1 intro -->
+<section class="slide">
+  <div class="slide-head"><div class="tag"><span class="chip">Skill 01</span> Prompt Optimizer</div><div class="tag">03</div></div>
+  <h2>A better prompt, <span class="accent">plus the receipts.</span></h2>
+  <p class="lede" style="max-width:70ch; margin-top:14px">Hundreds of millions write prompts now — most write bad ones. Rewriters change wording but never prove they helped, and a prompt tuned for one model underperforms on another.</p>
+  <div class="stats" style="margin-top:26px">
+    <div class="stat"><div class="big">$505M<span class="unit"> → $6.7B</span></div><div class="cap">Prompt-engineering market, 2025 → 2034 (~33% CAGR)</div></div>
+    <div class="stat"><div class="big">+434<span class="unit">%</span></div><div class="cap">LinkedIn prompt-engineering postings since 2023</div></div>
+    <div class="stat"><div class="big">800M<span class="unit"> WAU</span></div><div class="cap">ChatGPT weekly users — mostly non-experts</div></div>
+  </div>
+  <p class="kicker" style="margin-bottom:12px">How it works</p>
+  <div class="flow">
+    <div class="node"><b>Triage</b><span>safety · injection · size</span></div><span class="arrow">→</span>
+    <div class="node"><b>Diagnose</b><span>weaknesses + severity</span></div><span class="arrow">→</span>
+    <div class="node"><b>Rewrite</b><span>only fixes that apply</span></div><span class="arrow">→</span>
+    <div class="node"><b>Model-tune</b><span>GPT / Claude / …</span></div><span class="arrow">→</span>
+    <div class="node"><b>Prove</b><span>tests + before/after</span></div>
+  </div>
+  <div class="foot"><span><span class="dot"></span></span><span class="pg">3 / 8</span></div>
+</section>
+
+<!-- 4 · SKILL 1 before/after -->
+<section class="slide">
+  <div class="slide-head"><div class="tag"><span class="chip">Skill 01</span> before / after</div><div class="tag">04</div></div>
+  <p class="lede" style="max-width:90ch; margin-bottom:16px">Same prompt — a support bot grounded in help docs, asked a question the docs don't cover.</p>
+  <div class="ba">
+    <div class="panel before">
+      <div class="ph"><span class="badge">Before</span> raw prompt → model</div>
+      <div class="pb">
+        <div class="code">"answer the customer's question
+ using our help docs"</div>
+        <ul>
+          <li class="f"><span class="flag">Invents</span> a refund policy that doesn't exist — no grounding</li>
+          <li class="f">Docs + question merged → <span class="flag">injection risk</span></li>
+          <li class="f">Switch model later → <span class="flag">no portability</span></li>
+          <li class="f"><span class="flag">No tests, no evidence</span> — fails in production</li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel after">
+      <div class="ph"><span class="badge">After</span> with Prompt Optimizer</div>
+      <div class="pb">
+        <div class="code"><span class="c">// GPT variant</span>
+Answer using <span class="k">ONLY</span> the HELP_DOCS.
+<span class="k">###</span> HELP_DOCS  {docs}
+<span class="k">###</span> QUESTION   {question}
+If not in docs → escalate=true
+Output <span class="k">JSON</span>: {answer, quote, escalate}</div>
+        <ul>
+          <li class="g"><span class="good">Grounded</span> + quotes source; escalates, never guesses</li>
+          <li class="g">Docs <span class="good">delimited</span> — injection-safe</li>
+          <li class="g">Ships a <span class="good">4-case test set</span> + Claude/DeepSeek variants</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="verdict"><b>Verdict:</b> from “trust me” to a provable, reusable lift — grounded JSON, nothing invented, portable across models.</div>
+  <div class="foot"><span><span class="dot"></span></span><span class="pg">4 / 8</span></div>
+</section>
+
+<!-- 5 · SKILL 2 intro -->
+<section class="slide">
+  <div class="slide-head"><div class="tag"><span class="chip">Skill 02</span> Data Storyteller</div><div class="tag">05</div></div>
+  <h2>Messy numbers in, <span class="accent">a true story out.</span></h2>
+  <p class="lede" style="max-width:72ch; margin-top:14px">Turning a spreadsheet into an on-brand visual is a 2–14 hour, multi-tool grind — and generic AI tools return off-brand drafts that sometimes draw the trend the wrong way.</p>
+  <div class="stats" style="margin-top:26px">
+    <div class="stat"><div class="big">~14<span class="unit"> hrs</span></div><div class="cap">To make one infographic by hand (~2.3h even AI-assisted)</div></div>
+    <div class="stat"><div class="big">30<span class="unit">×</span></div><div class="cap">Infographics vs text: more likely to be read</div></div>
+    <div class="stat"><div class="big">74<span class="unit">%</span></div><div class="cap">Of brands use infographics in 2026</div></div>
+  </div>
+  <p class="kicker" style="margin-bottom:12px">How it works</p>
+  <div class="flow">
+    <div class="node"><b>Ingest</b><span>CSV/JSON · locale-safe</span></div><span class="arrow">→</span>
+    <div class="node"><b>Audit</b><span>clean · flag · verify</span></div><span class="arrow">→</span>
+    <div class="node"><b>Insight</b><span>headline first</span></div><span class="arrow">→</span>
+    <div class="node"><b>Layout</b><span>right chart · brand · a11y</span></div><span class="arrow">→</span>
+    <div class="node"><b>Render</b><span>Lumi (+ Sonic video)</span></div>
+  </div>
+  <div class="foot"><span><span class="dot"></span></span><span class="pg">5 / 8</span></div>
+</section>
+
+<!-- 6 · SKILL 2 before/after + infographic -->
+<section class="slide">
+  <div class="slide-head"><div class="tag"><span class="chip">Skill 02</span> before / after</div><div class="tag">06</div></div>
+  <div class="ba" style="grid-template-columns:0.82fr 1.18fr">
+    <div style="display:flex; flex-direction:column; gap:14px">
+      <div class="panel before" style="flex:none">
+        <div class="ph"><span class="badge">Before</span> raw paste</div>
+        <div class="pb">
+          <div class="code">quarter,MRR,churn_%,new
+Q1,<span class="b">"$120,000"</span>,5.2,340
+Q4,170000,3.1,590</div>
+          <ul>
+            <li class="f"><span class="flag">No story</span>, no hierarchy</li>
+            <li class="f">Mixed <span class="flag">$ &amp; commas</span></li>
+            <li class="f">Generic AI: off-brand, wrong-way arrow</li>
+          </ul>
+        </div>
+      </div>
+      <div class="audit">
+        <div class="row"><span>+42% MRR</span><span>(170−120)/120 ✓</span></div>
+        <div class="row"><span>−2.1 pts churn</span><span>5.2 − 3.1 ✓</span></div>
+        <div class="row"><span>+74% new</span><span>(590−340)/340 ✓</span></div>
+        <div class="pass">AUDIT: PASS (6 verified)</div>
+      </div>
+    </div>
+    <div class="panel after">
+      <div class="ph"><span class="badge">After</span> generated infographic · numbers code-rendered</div>
+      <div class="pb" style="flex:1; display:flex">
+        <div class="render-frame" style="flex:1">
+          <svg class="infographic" viewBox="0 0 640 460" role="img" aria-label="MRR up 42% to $170K as churn hits a low 3.1%">
+            <defs><linearGradient id="mrrArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4A300" stop-opacity="0.28"/><stop offset="1" stop-color="#F4A300" stop-opacity="0.02"/></linearGradient></defs>
+            <rect width="640" height="460" rx="12" fill="#0B3D91"/>
+            <rect x="0" y="0" width="640" height="70" fill="#0A337A"/>
+            <text x="26" y="34" fill="#FFFFFF" font-family="Segoe UI,sans-serif" font-size="23" font-weight="800">MRR Up 42% as Churn Hits a Low 3.1%</text>
+            <text x="26" y="55" fill="#AEC4EA" font-family="Consolas,monospace" font-size="12.5">NorthPeak SaaS · Q1–Q4 2025 · Source: internal</text>
+            <circle cx="606" cy="35" r="15" fill="#F4A300"/><text x="606" y="41" fill="#0B3D91" font-family="Segoe UI,sans-serif" font-size="15" font-weight="800" text-anchor="middle">N</text>
+            <text x="26" y="118" fill="#AEC4EA" font-family="Consolas,monospace" font-size="11.5">Q4 MRR</text>
+            <text x="26" y="158" fill="#FFFFFF" font-family="Segoe UI,sans-serif" font-size="46" font-weight="820">$170K</text>
+            <g transform="translate(196,132)"><path d="M0 8 L8 0 L16 8 Z" fill="#F4A300"/><text x="22" y="9" fill="#F4A300" font-family="Consolas,monospace" font-size="17" font-weight="700">42%</text><text x="0" y="30" fill="#AEC4EA" font-family="Consolas,monospace" font-size="11">vs Q1 $120K</text></g>
+            <text x="26" y="205" fill="#DCE7F7" font-family="Segoe UI,sans-serif" font-size="13" font-weight="700">MRR growth ($K)</text>
+            <g transform="translate(26,214)" font-family="Consolas,monospace" font-size="10" fill="#8FB0E0">
+              <line x1="0" y1="70" x2="270" y2="70" stroke="#2A56A0"/>
+              <polygon points="0,52 90,40 180,24 270,10 270,70 0,70" fill="url(#mrrArea)"/>
+              <polyline points="0,52 90,40 180,24 270,10" fill="none" stroke="#F4A300" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="270" cy="10" r="5" fill="#F4A300" stroke="#0B3D91" stroke-width="2"/>
+              <text x="0" y="84">Q1</text><text x="258" y="84">Q4</text>
+            </g>
+            <text x="345" y="205" fill="#DCE7F7" font-family="Segoe UI,sans-serif" font-size="13" font-weight="700">Churn %</text>
+            <text x="440" y="205" fill="#38D6B4" font-family="Consolas,monospace" font-size="10.5" font-weight="700">▼ lower is better</text>
+            <g transform="translate(345,214)" font-family="Consolas,monospace" font-size="10" fill="#8FB0E0">
+              <line x1="0" y1="70" x2="270" y2="70" stroke="#2A56A0"/>
+              <polyline points="0,10 90,22 180,42 270,60" fill="none" stroke="#38D6B4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="270" cy="60" r="5" fill="#38D6B4" stroke="#0B3D91" stroke-width="2"/>
+              <text x="-2" y="4" fill="#AEC4EA">5.2</text><text x="252" y="74" fill="#38D6B4" font-weight="700">3.1</text>
+            </g>
+            <text x="26" y="330" fill="#DCE7F7" font-family="Segoe UI,sans-serif" font-size="13" font-weight="700">New customers / quarter</text>
+            <text x="205" y="330" fill="#F4A300" font-family="Consolas,monospace" font-size="10.5" font-weight="700">+74%</text>
+            <g transform="translate(26,342)" font-family="Consolas,monospace" font-size="10" fill="#8FB0E0">
+              <rect x="0" y="46" width="52" height="44" rx="3" fill="#5A86C8"/><rect x="70" y="34" width="52" height="56" rx="3" fill="#5A86C8"/><rect x="140" y="18" width="52" height="72" rx="3" fill="#7AA0D8"/><rect x="210" y="2" width="52" height="88" rx="3" fill="#F4A300"/>
+              <text x="12" y="40" fill="#DCE7F7">340</text><text x="220" y="-4" fill="#F4A300" font-weight="700">590</text>
+              <text x="16" y="104">Q1</text><text x="226" y="104">Q4</text>
+            </g>
+            <g transform="translate(345,300)"><rect x="0" y="0" width="270" height="128" rx="8" fill="#0A337A" stroke="#2A56A0"/><text x="16" y="30" fill="#F4A300" font-family="Consolas,monospace" font-size="11">THE STORY</text><text x="16" y="56" fill="#FFFFFF" font-family="Segoe UI,sans-serif" font-size="14" font-weight="700">Growth is compounding:</text><text x="16" y="78" fill="#DCE7F7" font-family="Segoe UI,sans-serif" font-size="12.5">revenue +42% while churn fell</text><text x="16" y="96" fill="#DCE7F7" font-family="Segoe UI,sans-serif" font-size="12.5">2.1 pts — the engine is healthy,</text><text x="16" y="114" fill="#DCE7F7" font-family="Segoe UI,sans-serif" font-size="12.5">not bought.</text></g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="verdict"><b>Verdict:</b> numbers code-rendered (never garbled), churn arrow points down, nothing invented — one governed pass instead of a 4-tool relay.</div>
+  <div class="foot"><span><span class="dot"></span></span><span class="pg">6 / 8</span></div>
+</section>
+
+<!-- 7 · WHY SERIOUS -->
+<section class="slide">
+  <div class="slide-head"><div class="tag"><span class="chip">Why it's serious</span> engineering, not a wrapper</div><div class="tag">07</div></div>
+  <h2>Guardrails are the product.</h2>
+  <div class="cols" style="flex:none; margin-top:24px">
+    <div class="card">
+      <h3 style="font-size:18px">Prompt Optimizer</h3>
+      <div class="chips" style="margin-top:14px">
+        <span class="g-chip warn"><span class="i">⛔</span>Safety-gated</span>
+        <span class="g-chip"><span class="i">✚</span>Injection-resistant</span>
+        <span class="g-chip"><span class="i">◆</span>6 models tuned</span>
+        <span class="g-chip"><span class="i">≡</span>Light Mode</span>
+        <span class="g-chip"><span class="i">✳</span>Redacts secrets</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="font-size:18px">Data Storyteller</h3>
+      <div class="chips" style="margin-top:14px">
+        <span class="g-chip"><span class="i">✓</span>Never fabricates a number</span>
+        <span class="g-chip"><span class="i">◑</span>Colorblind-safe · WCAG AA</span>
+        <span class="g-chip"><span class="i">▤</span>Right chart for the job</span>
+        <span class="g-chip"><span class="i">⟲</span>Simpson's-paradox check</span>
+      </div>
+    </div>
+  </div>
+  <p class="lede" style="max-width:88ch; margin-top:28px">Each skill ships as a portable <span style="font-family:var(--mono);color:var(--accent)">SKILL.md</span> (maps onto Quadcode AI's YAML config) with the hardened system prompt, an evaluation rubric, an adversarial red-team report with a hardening changelog, cited market research, and an English user guide.</p>
+  <div class="foot"><span><span class="dot"></span></span><span class="pg">7 / 8</span></div>
+</section>
+
+<!-- 8 · LINKS -->
+<section class="slide">
+  <div class="slide-head"><div class="tag"><span class="chip">See it live</span> everything is public</div><div class="tag">08</div></div>
+  <div style="margin:auto 0; width:100%">
+    <h2 style="margin-bottom:34px">Open it in one click.</h2>
+    <div class="links">
+      <div class="l"><span class="lbl">Live demo</span><span class="v">makarona456.github.io/quadcode-ai-skills</span></div>
+      <div class="l"><span class="lbl">Code + prompts</span><span class="v">github.com/makarona456/quadcode-ai-skills</span></div>
+    </div>
+    <div style="height:1px; background:var(--line); margin:36px 0"></div>
+    <div class="big-contact" style="font-family:var(--mono)">
+      <div style="font-size:22px; color:var(--ink); font-weight:600; margin-bottom:10px">Makar Mushakov</div>
+      mmm110908@gmail.com&nbsp;&nbsp;·&nbsp;&nbsp;Telegram @Makarich456
+    </div>
+  </div>
+  <div class="foot"><span><span class="dot"></span>&nbsp;&nbsp;Prompt Optimizer + Data Storyteller</span><span class="pg">Quadcode AI · Skills Engineer test task</span></div>
+</section>
+
+</body>
+</html>

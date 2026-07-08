@@ -23,7 +23,7 @@ https://makarona456.github.io/quadcode-ai-skills/
 
 **Код скиллов с промптами, документация (EN), примеры и red-team-отчёты:**
 · GitHub (можно смотреть онлайн и скачать): https://github.com/makarona456/quadcode-ai-skills
-· Google Drive (та же папка): [ССЫЛКА НА GOOGLE DRIVE]
+· Google Drive (та же папка): https://drive.google.com/drive/folders/1Lg0VwqztygYq7Bx50_gn5HhoZu_C-_j6?usp=sharing
 
 Как каждый скилл собирался: research спроса (с источниками) → инженерия полного системного промпта → adversarial red-team → закалённая финальная версия с changelog. В пакет вложен реальный неотредактированный прогон Prompt Optimizer (`skill-1-prompt-optimizer/examples/live-run.md`) — это фактический вывод скилла. Буду рад ответить на вопросы. Спасибо!
 
